@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+  <title>A test</title>
+  
+</head>
+
+<link
+  rel="stylesheet"
+  href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+  integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+  crossorigin="anonymous"
+/>
+
+<body>
+    <style>
+
+path {
+	fill: none;
+}
+body {font-family: monospace; line-height: 160%; font-size: 10px; }
+        ul {list-style: none; margin: 0; padding: 0;}
+        li {display: inline-block; min-width: 80px; padding: 10px; background-color: #eee; margin: 0;}
+        input {border: 1px dotted #ccc; background: white; font-family: monospace; padding: 10px 20px; font-size: 10px; margin: 20px 10px 20px 0; color: red;}
+        input:focus { background-color:yellow; outline: none;}
+</style>
+
+
+
+<script src="https://unpkg.com/d3-simple-slider"></script>
+
+Currently a "working" prototype: if there are any errors one wants fixed send me an email or create an issue on git
+<br/>
+(No guarantees on accuracy of flips/pre-critical leaves/differing scenarios when dimension > 5.)
+<form name="myform" onSubmit="return handleClick()">
+            <input name="Submit"  type="submit" value="change dimension" >
+            <input type="text" id="myVal" placeholder="insert integer (<6?)">
+        </form>
+
+ <ul></ul>
+ 
+ <div id="my_dataviz"></div>
+ 
+  <div id="anotherviz"></div>
+ 
+ <!--- <input type="range" name="mySlider" id=mySlider min="10" max="100" value="50"> --->
+ 
+<div>
+    <div class="col-sm-2"><p id="value-simple"></p></div>
+    <div class="col-sm"><div id="slider-simple"></div></div>
+  </div>
+      
+<br/> <!-- this is a line break -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.2/d3.min.js"></script>
+<script src="https://unpkg.com/d3-simple-slider"></script>
+<script src="full_simple.js"></script>
+<script src="min_simple.js"></script>
+<script src="fullver.js"></script>
+
+ 
+
+
+
+
+
+
+
+
+  
+<g class="item" transform="translate(0, 0)">
+
+<br/> 
+
+ 
+</g>
+
+</body>
+</html>
