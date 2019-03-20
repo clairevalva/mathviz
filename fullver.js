@@ -2,17 +2,16 @@
  * Last edited on March 13, 2019 by Claire Valva
  * 
  * 
- * TO DO: add sign of rotation
- * TO DO: update own webpage
- * TO DO: debug if necessary
- * TO DO: add other arrangements
+ * TO DO: add round slider
+ * TO DO: debug if necessary --- 
+ * TO DO: add other arrangements -- that comes next!
  */
 
 // declare original circle
 // set radius
 var radius = 1000/4;
-var odim = 3;
-var global_dim = 3;
+var odim = 4;
+var global_dim = 4;
 var global_offsets = [];
 var global_leafs = [];
 var global_arcs = [];
@@ -511,15 +510,21 @@ function updater_move(arcnum, newoffset = false, dimen = global_dim, newleaf = f
         global_leafs[arcnum] = newleaf;
     }
     
+    var sign = false;
     if (newoffset === false){
         newoffset = global_offsets[arcnum];
     } else {
+        if (global_offsets[arcnum] > newoffset){
+            sign = -1;
+        } else {
+            sign = 1;
+        };
         global_offsets[arcnum] = newoffset;
     }
     
     log_o(arcnum, 0, global_offsets[arcnum]);
     
-    leaf_update();
+    leaf_update(sign);
     
     manyfor_intersect(arcnum);
 
@@ -527,7 +532,7 @@ function updater_move(arcnum, newoffset = false, dimen = global_dim, newleaf = f
 
 // CHECK THAT LEAF UPDATE WORKS
 
-function leaf_update(offset = false){
+function leaf_update(sign, offset = false){
     
     for (var i = 0; i < all_names.length; i ++){
         remover(all_names[i]);
@@ -550,10 +555,16 @@ function leaf_update(offset = false){
             var oss = offset[arcnum];
         }
         
-        check_overlap();
-        check_overlap();
-        check_overlap();
-        check_overlap();
+        // inelegance.. but works?
+        check_overlap(sign);
+        check_overlap(sign);
+        check_overlap(sign);
+        check_overlap(sign);
+        check_overlap(sign);
+        check_overlap(sign);
+        check_overlap(sign);
+        check_overlap(sign);
+        check_overlap(sign);
 
         for (var pre = 0; pre < prenum + 1; pre ++){
             
@@ -710,9 +721,20 @@ color, firstname, precrit, leaf_len = false){
     } else {
         var middle = (eang - sang)/2 + sang;
     }
+    var adder = 0;
+    if (precrit === 0){
+         adder = 45;
+    } else  if (precrit === 1){
+        adder = 70;
+    } else if (precrit === 2){
+        adder = 10;
+    } else {
+        adder = 5;
+    }
     
-    var x_mid = (radius/20 - 10*(4-precrit)) * Math.cos(middle) + 100 + radius;
-    var y_mid = (radius/20 - 10*(4-precrit)) * Math.sin(middle) + 100 + radius;
+    //console.log(radius/20 - adder)
+    var x_mid = (radius/20 - adder) * Math.cos(middle) + 100 + radius;
+    var y_mid = (radius/20 - adder) * Math.sin(middle) + 100 + radius;
     
     var points = [[x_st, y_st], [x_mid, y_mid], [x_e, y_e]];
     
@@ -751,14 +773,14 @@ function new_leaf_comp(big_l, small_l){
     
     while (greater === false){
         //apend something
-        var divider = Math.pow(global_dim, exponent + 1);
+        var divider = Math.pow(3, exponent + 1);
         var tocomp = 1 / divider;
         var ratio = small_l / big_l;
         
         //console.log("ratio", ratio, "div", divider, "exp", exponent);
         
         if (ratio > tocomp){
-            console.log("ratio", ratio, "div", divider, "exp", exponent);
+            //console.log("ratio", ratio, "div", divider, "exp", exponent);
             greater = true;
             return(exponent);
         } else {
@@ -776,11 +798,14 @@ function new_leaf_comp(big_l, small_l){
     // something weeird is going on here... fix
 }
 
-function check_overlap(){
+function check_overlap(sign){
     var unfold = manyfor_intersect();
     var list_crits = unfold[0]; 
     var pairlist = unfold[1];
     
+    if (sign === false){
+        sign = 1;
+    }
     // NOW NEED TO CHECK AGAINST ITSELF!!
     //console.log(unfold)
     // when hit add (or subtract theta) to bounce
@@ -881,7 +906,7 @@ function check_overlap(){
                 
                 if (flip === true){
                     // don't forget to get direction for the flip
-                    var newoss = oss_list1[se_angs1[ent1][0]] + theta_flip;
+                    var newoss = oss_list1[se_angs1[ent1][0]] + theta_flip*sign;
                     log_o(consider[1], se_angs1[ent1][0], newoss);
 
                 };
@@ -898,8 +923,6 @@ function check_overlap(){
                 var flip_min = Math.max.apply(null,[se_angs0[ent1][0], se_angs0[ent0][0]]);
                 //console.log(flip_min)
                 var theta_flip = (2*Math.PI)/(Math.pow(global_dim, flip_min + 1));
-                console.log(theta_flip);
-                //console.log(theta_flip)
                 var flip = false;
                 if (se_angs0[ent0][1] > se_angs0[ent0][2]){
                     if (se_angs0[ent1][1] < se_angs0[ent0][1] &&
@@ -926,7 +949,7 @@ function check_overlap(){
                 
                 if (flip === true){
                     // don't forget to get direction for the flip
-                    var newoss = oss_list0[se_angs0[ent1][0]] + theta_flip;
+                    var newoss = oss_list0[se_angs0[ent1][0]] + theta_flip*sign;
                     log_o(consider[0], se_angs0[ent1][0], newoss);
 
                 };
@@ -943,7 +966,7 @@ function check_overlap(){
                 var flip_min = Math.max.apply(null,[se_angs1[ent1][0], se_angs1[ent0][0]]);
                 //console.log(flip_min)
                 var theta_flip = (2*Math.PI)/(Math.pow(global_dim, flip_min + 1));
-                console.log(theta_flip);
+                //console.log(theta_flip);
                 //console.log(theta_flip)
                 var flip = false;
                 if (se_angs1[ent0][1] > se_angs1[ent0][2]){
@@ -971,15 +994,14 @@ function check_overlap(){
                 
                 if (flip === true){
                     // don't forget to get direction for the flip
-                    var newoss = oss_list1[se_angs1[ent1][0]] + theta_flip;
+                    var newoss = oss_list1[se_angs1[ent1][0]] + theta_flip*sign;
                     log_o(consider[1], se_angs1[ent1][0], newoss);
 
                 };
             
             };
         };
-        
-    //now do the self_comparison!!!    
+          
                 
                 
     };  
@@ -1010,3 +1032,9 @@ function manyfor_intersect(){
    return [list_crits, pairlist];
 }
 
+// when button is clicked get value
+function handleClick2(event){
+    //console.log(document.getElementById("myVal").value);
+    dim_restart(document.getElementById("myVal").value);
+    return false;
+            }
