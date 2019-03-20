@@ -118,7 +118,7 @@ function draw_lines(twopoints, color, named){
         .attr("stroke", color)
         .attr("fill","none")
         .attr("id", named)
-        .attr("stroke-width",4);
+        .attr("stroke-width",3);
 }
 
 
