@@ -1,2 +1,2 @@
 # mathviz
-visualizations of mathematical things including some specific laminations of the disk, most definitely still under construction but should still be passable! :)
+visualizations of mathematical things: for now, a Bottcher lamination of a compelx polynomial.
